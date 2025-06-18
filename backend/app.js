@@ -10,8 +10,8 @@ app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 
-
-
+const userRoutes = require("./routes/userRoutes");
+app.use("/users", userRoutes);
 
 const port = process.env.PORT || 5000;
 
