@@ -1,4 +1,6 @@
 const { UserModel, registerVilidate } = require("../models/userModels");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const userRegister = async (req, res) => {
   try {
@@ -11,10 +13,11 @@ const userRegister = async (req, res) => {
     if (user) {
       return res.status(400).json({ message: "user already avilable" });
     }
+    const hashPassword = await bcrypt.hash(password, 10);
     const newUser = new UserModel({
       name,
       email,
-      password,
+      password: hashPassword,
     });
     await newUser.save();
     return res
@@ -33,15 +36,27 @@ const userLogin = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "email is wrong" });
     }
-    if (user.password !== password) {
-      return res.status(401).json({ message: "Password is incorrect" });
+    const isMatch = await bcrypt.compare(user.password, password);
+    if (isMatch) {
+      return res.status(401).json({ message: "password is wrong" });
     }
-    return res.status(200).json({ message: "user login successfully", user});
+    jwt.sign({ userId: user._id }, process.env.SECRET_KEY, { expiresIn: "7d" });
+    const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
+      expiresIn: "7d",
+    });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "None",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+    return res
+      .status(200)
+      .json({ message: "user login successfully", token, user });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "user login failed" });
   }
 };
-
 
 module.exports = { userRegister, userLogin };
