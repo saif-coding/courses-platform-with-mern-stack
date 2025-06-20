@@ -40,7 +40,6 @@ const userLogin = async (req, res) => {
     if (isMatch) {
       return res.status(401).json({ message: "password is wrong" });
     }
-    jwt.sign({ userId: user._id }, process.env.SECRET_KEY, { expiresIn: "7d" });
     const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
       expiresIn: "7d",
     });

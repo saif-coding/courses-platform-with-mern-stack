@@ -7,7 +7,12 @@ const cookieParser = require("cookie-parser");
 dotenv.config();
 connectDB();
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 
 const userRoutes = require("./routes/userRoutes");

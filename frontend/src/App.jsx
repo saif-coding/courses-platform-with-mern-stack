@@ -1,9 +1,14 @@
 import React from "react";
-import Home from "./pages/Home";
+import Navbar from "./components/Navbar";
+import Routing from "./routes/Routing";
+import { ToastContainer } from "react-toastify";
+
 function App() {
   return (
     <>
-      <Home />
+      <ToastContainer />
+      <Navbar />
+      <Routing />
     </>
   );
 }
