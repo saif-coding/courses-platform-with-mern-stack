@@ -46,7 +46,7 @@ const userLogin = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: false,
-      sameSite: "None",
+      sameSite: "Strict",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     return res
@@ -58,4 +58,47 @@ const userLogin = async (req, res) => {
   }
 };
 
-module.exports = { userRegister, userLogin };
+const userLogout = async (req, res) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "Strict",
+    });
+    res.status(200).json({ message: "user logout successfully " });
+  } catch (error) {
+    console.error("user logout failed", error);
+    res.status(500).json({ message: "user logout failed" });
+  }
+};
+
+const getSingleUser = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const user = await UserModel.findById(userId).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "user not found" });
+    }
+    return res.status(200).json(user);
+  } catch (error) {
+    console.log("error of the sinlge user");
+  }
+};
+
+const getALLusers = async (req, res) => {
+  try {
+    const users = await UserModel.find().select("-password");
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("error to fatch all users", error);
+    res.status(500).json({ message: "failed to fatch all users" });
+  }
+};
+
+module.exports = {
+  userRegister,
+  userLogin,
+  userLogout,
+  getSingleUser,
+  getALLusers,
+};

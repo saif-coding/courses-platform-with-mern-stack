@@ -8,7 +8,6 @@ function Login() {
     email: "",
     password: "",
   });
-  console.log(loginData);
 
   const handlerChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
@@ -26,7 +25,6 @@ function Login() {
         toast.success(result.data.message);
         navigate("/");
       }
-      console.log(result);
     } catch (error) {
       toast.error(error.response.data.message);
       console.log(error);
