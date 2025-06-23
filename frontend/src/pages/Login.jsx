@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { UserContext } from "../context/UserContext";
 function Login() {
+  const { getSingleUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
     email: "",
@@ -23,6 +25,7 @@ function Login() {
       );
       if (result.status === 200) {
         toast.success(result.data.message);
+        await getSingleUser();
         navigate("/");
       }
     } catch (error) {

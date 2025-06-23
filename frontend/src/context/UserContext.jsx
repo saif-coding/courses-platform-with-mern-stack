@@ -4,7 +4,6 @@ export const UserContext = createContext();
 function UserContextProvider({ children }) {
   const [allUsers, setAllUsers] = useState([]);
   const [singleUser, setSingleUser] = useState([]);
-  console.log(singleUser, "context api");
   const getSingleUser = async () => {
     try {
       const result = await axios.get(
@@ -12,18 +11,32 @@ function UserContextProvider({ children }) {
         { withCredentials: true }
       );
       setSingleUser(result.data);
-      console.log(result.data, "context user");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getAllUsers = async () => {
+    try {
+      const result = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/users/allusers`,
+        { withCredentials: true }
+      );
+      setAllUsers(result.data);
+      console.log(result.data);
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
     getSingleUser();
+    getAllUsers();
   }, []);
 
+ 
   return (
     <UserContext.Provider
-      value={{ allUsers, setAllUsers, singleUser, setSingleUser }}
+      value={{ allUsers, setAllUsers, singleUser, setSingleUser,getSingleUser }}
     >
       {children}
     </UserContext.Provider>

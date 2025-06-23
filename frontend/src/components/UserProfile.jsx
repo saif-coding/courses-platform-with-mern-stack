@@ -2,8 +2,29 @@ import React from "react";
 import { FaEnvelope, FaCalendarAlt, FaUser } from "react-icons/fa";
 import { UserContext } from "../context/UserContext";
 import { useContext } from "react";
-const UserProfile = ({ user }) => {
-  const { singleUser } = useContext(UserContext);
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
+const UserProfile = () => {
+  const { singleUser, setSingleUser } = useContext(UserContext);
+  const navigate = useNavigate();
+  const userLogout = async () => {
+    try {
+      const result = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/users/logout`,
+        {},
+        { withCredentials: true }
+      );
+      if (result.status === 200) {
+        navigate("/");
+        setSingleUser("");
+        toast.success(result.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 p-4 sm:p-8">
       <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-xl overflow-hidden">
@@ -11,7 +32,9 @@ const UserProfile = ({ user }) => {
           {/* Profile Image */}
           <div className="bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center p-6">
             <img
-              src={user?.profileImage || "https://i.pravatar.cc/150?img=67"}
+              src={
+                singleUser?.profileImage || "https://i.pravatar.cc/150?img=67"
+              }
               alt="User"
               className="w-40 h-40 rounded-full border-4 border-white shadow-md object-cover"
             />
@@ -25,7 +48,7 @@ const UserProfile = ({ user }) => {
             <p className="text-sm text-gray-600 mb-4">
               Role:{" "}
               <span className="text-blue-500 capitalize">
-                {user?.role || "user"}
+                {singleUser?.role || "user"}
               </span>
             </p>
 
@@ -43,7 +66,7 @@ const UserProfile = ({ user }) => {
               {/* Add more user details below */}
               <div className="flex items-center text-gray-600">
                 <FaUser className="mr-3 text-blue-500" />
-                <span>User ID: {user?._id}</span>
+                <span>User ID: {singleUser?._id}</span>
               </div>
             </div>
 
@@ -52,7 +75,10 @@ const UserProfile = ({ user }) => {
               <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
                 Edit Profile
               </button>
-              <button className="px-4 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-50">
+              <button
+                onClick={() => userLogout()}
+                className="px-4 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-50"
+              >
                 Logout
               </button>
             </div>

@@ -1,5 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
+import { UserContext } from "./../context/UserContext";
+import { Link } from "react-router-dom";
 function Navbar() {
+  const { singleUser } = useContext(UserContext);
+  console.log(singleUser, "nav");
   const [open, setOpen] = React.useState(false);
   return (
     <nav className="flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b border-gray-300 bg-white relative transition-all">
@@ -13,7 +17,7 @@ function Navbar() {
 
       {/* Desktop Menu */}
       <div className="hidden sm:flex items-center gap-8">
-        <a href="#">Home</a>
+        <Link to={"/"}>Home</Link>
         <a href="#">About</a>
         <a href="#">Contact</a>
 
@@ -68,9 +72,19 @@ function Navbar() {
           </button>
         </div>
 
-        <button className="cursor-pointer px-8 py-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full">
-          Login
-        </button>
+        {singleUser._id ? (
+          <Link to={"/profile"}>
+            <button className="cursor-pointer px-8 py-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full">
+              Profile
+            </button>
+          </Link>
+        ) : (
+          <Link to={"/login"}>
+            <button className="cursor-pointer px-8 py-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full">
+              Login
+            </button>
+          </Link>
+        )}
       </div>
 
       <button

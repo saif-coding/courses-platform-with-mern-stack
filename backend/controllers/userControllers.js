@@ -1,4 +1,6 @@
 const { UserModel, registerVilidate } = require("../models/userModels");
+const uploadCloudinary = require("../middlewares/cloudinary");
+const path = require("path");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -9,6 +11,10 @@ const userRegister = async (req, res) => {
     if (error) {
       return res.status(400).json({ message: error.message });
     }
+    if (!req.file) {
+      return res.status(400).json({ message: "No image uploaded" });
+    }
+    const imageUrl = await uploadCloudinary(req.file.path);
     const user = await UserModel.findOne({ email });
     if (user) {
       return res.status(400).json({ message: "user already avilable" });
@@ -18,6 +24,7 @@ const userRegister = async (req, res) => {
       name,
       email,
       password: hashPassword,
+      profileImage: imageUrl,
     });
     await newUser.save();
     return res
