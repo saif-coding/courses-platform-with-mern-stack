@@ -4,6 +4,8 @@ import Home from "../pages/Home";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
 import UserProfile from "../components/UserProfile";
+import MainDashboard from "../pages/MainDashboard";
+import AddCourse from "../pages/AddCourse";
 function Routing() {
   return (
     <Routes>
@@ -11,6 +13,8 @@ function Routing() {
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/profile" element={<UserProfile />} />
+      <Route path="/dashboard" element={<MainDashboard />} />
+      <Route path="/dashboard/add" element={<AddCourse />} />
     </Routes>
   );
 }
