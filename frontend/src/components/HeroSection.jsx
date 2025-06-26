@@ -1,6 +1,7 @@
 import React from "react";
 import { FaPlay } from "react-icons/fa";
 import HeroImage from "../assets/images/hero.jpg";
+import { Link } from "react-router-dom";
 const HeroSection = () => {
   return (
     <section className="bg-[#F5F7FA] py-16 lg:py-24">
@@ -16,9 +17,11 @@ const HeroSection = () => {
             institutions.
           </p>
           <div className="mt-6 flex justify-center lg:justify-start items-center gap-4">
-            <button className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-all">
-              Find Courses
-            </button>
+            <Link to={"/courses"}>
+              <button className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-all">
+                Find Courses
+              </button>
+            </Link>
             <div className="flex items-center gap-2">
               <FaPlay className="text-blue-600" />
               <span className="text-blue-600 font-medium cursor-pointer">

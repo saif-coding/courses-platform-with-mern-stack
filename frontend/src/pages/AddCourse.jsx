@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 function AddCourse() {
+  const navigate = useNavigate();
   const [image, setImage] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -23,6 +26,10 @@ function AddCourse() {
         formdata,
         { withCredentials: true }
       );
+      if (result.status === 201) {
+        toast.success(result.data.message);
+        navigate("/");
+      }
       console.log(result.data);
     } catch (error) {
       console.log(error);
@@ -54,6 +61,14 @@ function AddCourse() {
                   />
                 </label>
               ))}
+
+            {image && (
+              <img
+                src={URL.createObjectURL(image)}
+                alt="preview"
+                className="w-24 h-auto object-cover"
+              />
+            )}
           </div>
         </div>
         <div className="flex flex-col gap-1 max-w-md">
@@ -138,7 +153,7 @@ function AddCourse() {
             />
           </div>
         </div>
-        <button className="px-8 py-2.5 bg-indigo-500 text-white font-medium rounded">
+        <button className="px-8 py-2.5 cursor-pointer bg-indigo-500 text-white font-medium rounded">
           ADD
         </button>
       </form>

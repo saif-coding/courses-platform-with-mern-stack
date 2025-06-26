@@ -6,31 +6,57 @@ const GetStarted = () => {
   const { courseData } = useContext(CourseContext);
   return (
     <section className="py-16 bg-[#f7f8f9]">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-16">
         <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
-          Pick a <span className="text-blue-600">Class</span> to Get Started
+          Pick a <span className="text-blue-600">Course</span> to Get Started
         </h2>
-        <div className="flex flex-wrap gap-6 justify-center">
-          {courseData.map((c) => (
-            <div
-              key={c._id}
-              className="w-full sm:w-[300px] bg-white shadow-md rounded-lg overflow-hidden"
-            >
-              <img
-                src={c.thumbnail}
-                alt="class1"
-                className="w-full h-[180px] object-cover"
-              />
-              <div className="p-4">
-                <h3 className="font-semibold text-lg text-gray-800 mb-2">
-                  {c.title}
-                </h3>
-                <h2>{c.category}</h2>
-                <p className="text-sm text-gray-600 mb-3">{c.description}</p>
-                <p>offer Price {c.offerPrice}</p>
-                <p> course Price {c.coursePrice}</p>
-                <button className="bg-blue-600 text-white py-2 px-4 rounded">
-                  Join Now
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {courseData.map((course) => (
+            <div className="bg-white rounded-2xl shadow-md overflow-hidden transition hover:shadow-lg w-76 md:w-86 max-w-md mx-auto">
+              {/* Thumbnail */}
+              <div className="h-48 w-full overflow-hidden">
+                <img
+                  src={course.thumbnail}
+                  alt={course.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* Content */}
+              <div className="p-5 space-y-3">
+                {/* Category */}
+                <span className="text-sm text-indigo-600 font-semibold uppercase tracking-wide">
+                  {course.category}
+                </span>
+
+                {/* Title */}
+                <h2 className="text-lg md:text-xl font-bold text-gray-800">
+                  {course.title.substring(0, 30)}...
+                </h2>
+
+                {/* description */}
+                <p className="text-sm text-gray-500">
+                  {course.description.substring(0, 110)}...
+                </p>
+
+                {/* Author */}
+                <p className="text-sm text-gray-500">
+                  By {course.author?.name || "Instructor"}
+                </p>
+
+                {/* Price Section */}
+                <div className="flex items-center gap-3">
+                  <span className="text-gray-400 line-through text-sm">
+                    ${course.coursePrice}
+                  </span>
+                  <span className="text-green-600 font-semibold text-lg">
+                    ${course.offerPrice}
+                  </span>
+                </div>
+
+                {/* Button */}
+                <button className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition font-medium">
+                  Enroll Now
                 </button>
               </div>
             </div>

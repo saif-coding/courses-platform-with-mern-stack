@@ -6,6 +6,7 @@ import Login from "../pages/Login";
 import UserProfile from "../components/UserProfile";
 import MainDashboard from "../pages/MainDashboard";
 import AddCourse from "../pages/AddCourse";
+import AllCourses from "../pages/AllCourses";
 function Routing() {
   return (
     <Routes>
@@ -15,6 +16,7 @@ function Routing() {
       <Route path="/profile" element={<UserProfile />} />
       <Route path="/dashboard" element={<MainDashboard />} />
       <Route path="/dashboard/add" element={<AddCourse />} />
+      <Route path="/courses" element={<AllCourses />} />
     </Routes>
   );
 }
