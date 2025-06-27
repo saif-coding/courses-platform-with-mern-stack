@@ -1,6 +1,7 @@
 import React from "react";
 import { useContext } from "react";
 import { CourseContext } from "./../context/CourseContext";
+import { Link } from "react-router-dom";
 
 const GetStarted = () => {
   const { courseData } = useContext(CourseContext);
@@ -8,7 +9,7 @@ const GetStarted = () => {
     <section className="py-16 bg-[#f7f8f9]">
       <div className="max-w-7xl mx-auto px-16">
         <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
-          Pick a <span className="text-blue-600">Course</span> to Get Started
+          Pick a <span className="text-blue-600">Latest Course</span> to Get Started
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {courseData.map((course) => (
@@ -40,9 +41,18 @@ const GetStarted = () => {
                 </p>
 
                 {/* Author */}
-                <p className="text-sm text-gray-500">
-                  By {course.author?.name || "Instructor"}
-                </p>
+                <div className=" flex items-center">
+                  {/* <div className="w-8 h-8 border rounded-full bg-gray-400">
+                    <img
+                      className=" object-cover rotate-12 flex items-center justify-center rounded-full"
+                      src={course.author.profileImage}
+                      alt=""
+                    />
+                  </div> */}
+                  <p className="text-sm text-gray-500">
+                    Author {course.author?.name || "Instructor"}
+                  </p>
+                </div>
 
                 {/* Price Section */}
                 <div className="flex items-center gap-3">
@@ -55,9 +65,11 @@ const GetStarted = () => {
                 </div>
 
                 {/* Button */}
-                <button className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition font-medium">
-                  Enroll Now
-                </button>
+                <Link to={`/single/${course._id}`}>
+                  <button className="w-full cursor-pointer bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition font-medium">
+                    View Details
+                  </button>
+                </Link>
               </div>
             </div>
           ))}

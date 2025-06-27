@@ -29,11 +29,27 @@ const addCourse = async (req, res) => {
 
 const getAllCourses = async (req, res) => {
   try {
-    const courses = await CourseModel.find().populate("author");
+    const courses = await CourseModel.find()
+      .sort({ createdAt: -1 })
+      .populate("author");
     return res.status(200).json(courses);
   } catch (error) {
     console.error("failed to fatch courses", error);
     res.status(500).json({ message: "failed to fatch courses" });
   }
 };
-module.exports = { addCourse, getAllCourses };
+
+const getSingleCourse = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const singleCourse = await CourseModel.findById(id).populate("author");
+    if (!singleCourse) {
+      return res.status(404).json({ message: "course not found" });
+    }
+    return res.status(200).json(singleCourse);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "course is fetching is failed" });
+  }
+};
+module.exports = { addCourse, getAllCourses, getSingleCourse };

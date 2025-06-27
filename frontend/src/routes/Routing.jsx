@@ -7,6 +7,7 @@ import UserProfile from "../components/UserProfile";
 import MainDashboard from "../pages/MainDashboard";
 import AddCourse from "../pages/AddCourse";
 import AllCourses from "../pages/AllCourses";
+import SingleCourse from "../pages/SingleCourse";
 function Routing() {
   return (
     <Routes>
@@ -17,6 +18,7 @@ function Routing() {
       <Route path="/dashboard" element={<MainDashboard />} />
       <Route path="/dashboard/add" element={<AddCourse />} />
       <Route path="/courses" element={<AllCourses />} />
+      <Route path="/single/:id" element={<SingleCourse />} />
     </Routes>
   );
 }

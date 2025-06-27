@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { CourseContext } from "./../context/CourseContext";
+import { Link } from "react-router-dom";
 
 function AllCourses() {
   const { courseData } = useContext(CourseContext);
@@ -56,9 +57,11 @@ function AllCourses() {
                   </div>
 
                   {/* Button */}
-                  <button className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition font-medium">
-                    Enroll Now
-                  </button>
+                  <Link to={`/single/${course._id}`}>
+                    <button className="w-full cursor-pointer bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition font-medium">
+                      View Details
+                    </button>
+                  </Link>
                 </div>
               </div>
             ))}
