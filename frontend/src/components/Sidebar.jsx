@@ -33,7 +33,7 @@ function Sidebar() {
           <FaChalkboardTeacher /> Instructors
         </NavLink>
         <NavLink
-          to="/admin/courses"
+          to="/courses"
           className="flex items-center gap-3 hover:text-blue-400"
         >
           <FaBook /> All Courses

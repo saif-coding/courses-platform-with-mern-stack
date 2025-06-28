@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 const UserProfile = () => {
   const { singleUser, setSingleUser } = useContext(UserContext);
+  console.log(singleUser, "profile");
   const navigate = useNavigate();
   const userLogout = async () => {
     try {

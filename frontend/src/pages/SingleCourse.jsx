@@ -5,6 +5,8 @@ import axios from "axios";
 const SingleCourse = () => {
   const { id } = useParams();
   const [course, setCourse] = useState(null);
+  const [show, setShow] = useState(false);
+  const [coursePrice, setCoursePrice] = useState("");
   useEffect(() => {
     const fetchCourse = async () => {
       try {
@@ -27,6 +29,19 @@ const SingleCourse = () => {
       </div>
     );
 
+  const addPrice = async () => {
+    try {
+      const result = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/enrolls/add/${id}`,
+        { coursePrice },
+        { withCredentials: true }
+      );
+      console.log(result.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4 md:px-16">
       {/* Header */}
@@ -34,10 +49,10 @@ const SingleCourse = () => {
         <img
           src={course.thumbnail}
           alt="Thumbnail"
-          className="rounded-lg w-full md:w-80 h-52 object-cover shadow-lg"
+          className="rounded-lg w-full md:w-100 h-52 object-cover shadow-lg"
         />
         <div className="flex-1">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+          <h1 className="text-3xl font-bold text-gray-800 mb-5  ">
             {course.title}
           </h1>
           <p className="text-gray-600 mb-1">
@@ -66,7 +81,7 @@ const SingleCourse = () => {
         </div>
 
         {/* Right: Sidebar */}
-        <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
+        <div className="bg-white relative p-6 rounded-lg shadow-md space-y-4">
           <h3 className="text-xl font-bold text-gray-800">Enroll Now</h3>
           <div className="flex items-center gap-3">
             <span className="text-lg line-through text-red-400">
@@ -76,9 +91,37 @@ const SingleCourse = () => {
               Rs. {course.offerPrice}
             </span>
           </div>
-          <button className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded transition duration-200">
+          <button
+            onClick={() => setShow(!show)}
+            className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded transition duration-200"
+          >
             Enroll This Course
           </button>
+          {show && (
+            <div className=" w-76 bg-black rounded-lg h-72 -top-20 p-4 absolute ">
+              <input
+                onChange={(e) => setCoursePrice(e.target.value)}
+                className=" bg-white w-full px-4 py-2 border rounded-xl mt-6"
+                type="text"
+                placeholder="Course Price"
+              />
+              <div className=" flex gap-4">
+                <button
+                  onClick={() => addPrice()}
+                  className="w-full py-3 bg-indigo-500 mt-12 text-sm hover:bg-indigo-700 text-white font-semibold rounded transition duration-200"
+                  disabled={!coursePrice}
+                >
+                  Send Payments
+                </button>
+                <button
+                  onClick={() => setShow(!show)}
+                  className="w-full py-3 bg-red-500 mt-12 text-sm hover:bg-red-700 text-white font-semibold rounded transition duration-200"
+                >
+                  Cancel Payments
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
