@@ -34,4 +34,17 @@ const enrollCourse = async (req, res) => {
   }
 };
 
-module.exports = { enrollCourse };
+const getUserEnrollments = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const enrollments = await PriceModel.find({
+      user: userId,
+    }).populate("course");
+
+    res.status(200).json(enrollments);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to get enrolled courses" });
+  }
+};
+
+module.exports = { enrollCourse, getUserEnrollments };

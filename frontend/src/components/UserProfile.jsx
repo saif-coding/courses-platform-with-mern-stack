@@ -1,13 +1,11 @@
-import React from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { FaEnvelope, FaCalendarAlt, FaUser } from "react-icons/fa";
 import { UserContext } from "../context/UserContext";
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 const UserProfile = () => {
   const { singleUser, setSingleUser } = useContext(UserContext);
-  console.log(singleUser, "profile");
   const navigate = useNavigate();
   const userLogout = async () => {
     try {
@@ -25,6 +23,23 @@ const UserProfile = () => {
       console.log(error);
     }
   };
+  const [enrollCoursesData, setEnrollCoursesData] = useState([]);
+  console.log(enrollCoursesData, "courses");
+  const getEnrollCourses = async () => {
+    try {
+      const result = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/enrolls/my-courses`,
+        { withCredentials: true }
+      );
+      setEnrollCoursesData(result.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getEnrollCourses();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100 p-4 sm:p-8">
@@ -85,6 +100,36 @@ const UserProfile = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div>
+        {enrollCoursesData.map((c) => (
+          <div className="flex flex-col md:flex-row gap-6 mt-5 items-start">
+            <img
+              src={c.course.thumbnail}
+              alt="Thumbnail"
+              className="rounded-lg w-full md:w-32 h-20 object-cover shadow-lg"
+            />
+            <div className="flex-1">
+              <h1 className="text-1xl font-bold text-gray-800 mb-5  ">
+                {c.course.title}
+              </h1>
+              <p className="text-gray-600 mb-1">
+                Category:{" "}
+                <span className="font-semibold text-indigo-600">
+                  {c.course.category}
+                </span>
+              </p>
+              <div className="flex items-center gap-3">
+                <span className="text-gray-400 line-through text-sm">
+                  ${c.course.coursePrice}
+                </span>
+                <span className="text-green-600 font-semibold text-lg">
+                  ${c.course.offerPrice}
+                </span>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
