@@ -8,6 +8,7 @@ import MainDashboard from "../pages/MainDashboard";
 import AddCourse from "../pages/AddCourse";
 import AllCourses from "../pages/AllCourses";
 import SingleCourse from "../pages/SingleCourse";
+import CourseLecturePage from "../pages/CourseLecturePage";
 function Routing() {
   return (
     <Routes>
@@ -19,6 +20,7 @@ function Routing() {
       <Route path="/dashboard/add" element={<AddCourse />} />
       <Route path="/courses" element={<AllCourses />} />
       <Route path="/single/:id" element={<SingleCourse />} />
+      <Route path="/allvideos/:id" element={<CourseLecturePage />} />
     </Routes>
   );
 }

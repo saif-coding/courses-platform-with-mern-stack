@@ -1,12 +1,11 @@
 import React, { useEffect, useContext, useState } from "react";
 import { FaEnvelope, FaCalendarAlt, FaUser } from "react-icons/fa";
 import { UserContext } from "../context/UserContext";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 const UserProfile = () => {
-  const { singleUser, setSingleUser } = useContext(UserContext);
-  const navigate = useNavigate();
+  const { singleUser, setSingleUser, enrollCoursesData } =
+    useContext(UserContext);
   const userLogout = async () => {
     try {
       const result = await axios.post(
@@ -23,23 +22,6 @@ const UserProfile = () => {
       console.log(error);
     }
   };
-  const [enrollCoursesData, setEnrollCoursesData] = useState([]);
-  console.log(enrollCoursesData, "courses");
-  const getEnrollCourses = async () => {
-    try {
-      const result = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/enrolls/my-courses`,
-        { withCredentials: true }
-      );
-      setEnrollCoursesData(result.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getEnrollCourses();
-  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100 p-4 sm:p-8">

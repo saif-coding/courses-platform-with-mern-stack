@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-
+import { toast } from "react-toastify";
+import { UserContext } from "../context/UserContext";
 const SingleCourse = () => {
+  const { getEnrollCourses } = useContext(UserContext);
   const { id } = useParams();
   const [course, setCourse] = useState(null);
   const [show, setShow] = useState(false);
   const [coursePrice, setCoursePrice] = useState("");
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchCourse = async () => {
       try {
@@ -36,9 +39,14 @@ const SingleCourse = () => {
         { coursePrice },
         { withCredentials: true }
       );
-      console.log(result.data);
+      if (result.status === 201) {
+        toast.success(result.data.message);
+        navigate(`/allvideos/${id}`);
+        await getEnrollCourses();
+      }
     } catch (error) {
       console.log(error);
+      toast.error(error.response.data.message);
     }
   };
 

@@ -11,7 +11,6 @@ function CourseContextProvider({ children }) {
         { withCredentials: true }
       );
       setCourseData(resutl.data);
-      console.log(resutl.data);
     } catch (error) {
       console.log(error);
     }

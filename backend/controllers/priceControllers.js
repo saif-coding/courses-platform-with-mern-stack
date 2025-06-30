@@ -47,4 +47,6 @@ const getUserEnrollments = async (req, res) => {
   }
 };
 
+
+
 module.exports = { enrollCourse, getUserEnrollments };
