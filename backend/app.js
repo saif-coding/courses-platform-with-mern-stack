@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 const userRoutes = require("./routes/userRoutes");
 const courseRoutes = require("./routes/courseRoutes");
 const priceRoutes = require("./routes/priceRoutes");
+const sectionRoutes = require("./routes/sectionRoutes");
 dotenv.config();
 connectDB();
 app.use(express.json());
@@ -21,6 +22,7 @@ app.use(cookieParser());
 app.use("/users", userRoutes);
 app.use("/courses", courseRoutes);
 app.use("/enrolls", priceRoutes);
+app.use("/sections", sectionRoutes);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`server is running on ${port}`));

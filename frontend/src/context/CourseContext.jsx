@@ -15,6 +15,7 @@ function CourseContextProvider({ children }) {
       console.log(error);
     }
   };
+
   useEffect(() => {
     getAllCourses();
   }, []);

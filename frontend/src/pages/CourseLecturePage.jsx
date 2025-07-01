@@ -22,30 +22,30 @@ const CourseLecturePage = () => {
     fetchCourse();
   }, [id]);
 
-  // const course = {
-  //   title: "Mastering Node.js",
-  //   category: "Backend",
-  //   author: { name: "John Doe" },
-  //   sections: [
-  //     {
-  //       title: "Introduction",
-  //       lectures: [
-  //         {
-  //           title: "What is Node.js?",
-  //           videoUrl: "https://example.com/vid1.mp4",
-  //         },
-  //         { title: "Setup & Tools", videoUrl: "https://example.com/vid2.mp4" },
-  //       ],
-  //     },
-  //     {
-  //       title: "Advanced Topics",
-  //       lectures: [
-  //         { title: "Streams", videoUrl: "https://example.com/vid3.mp4" },
-  //         { title: "Performance", videoUrl: "https://example.com/vid4.mp4" },
-  //       ],
-  //     },
-  //   ],
-  // };
+  const course = {
+    title: "Mastering Node.js",
+    category: "Backend",
+    author: { name: "John Doe" },
+    sections: [
+      {
+        title: "Introduction",
+        lectures: [
+          {
+            title: "What is Node.js?",
+            videoUrl: "https://example.com/vid1.mp4",
+          },
+          { title: "Setup & Tools", videoUrl: "https://example.com/vid2.mp4" },
+        ],
+      },
+      {
+        title: "Advanced Topics",
+        lectures: [
+          { title: "Streams", videoUrl: "https://example.com/vid3.mp4" },
+          { title: "Performance", videoUrl: "https://example.com/vid4.mp4" },
+        ],
+      },
+    ],
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4 md:px-16">
@@ -71,12 +71,12 @@ const CourseLecturePage = () => {
 
       <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-8">
         {/* Sidebar: Sections & Lectures */}
-        {/* <div className="bg-white shadow rounded-lg p-4 col-span-1 overflow-auto max-h-[75vh]">
+        <div className="bg-white shadow rounded-lg p-4 col-span-1 overflow-auto max-h-[75vh]">
           <h2 className="text-xl font-bold mb-4 text-gray-800">
             Course Content
           </h2>
-          {enrollCourses.sections && enrollCourses.sections.length > 0 ? (
-            enrollCourses.sections.map((section, secIndex) => (
+          {course.sections && course.sections.length > 0 ? (
+            course.sections.map((section, secIndex) => (
               <div key={secIndex} className="mb-6">
                 <h3 className="text-lg font-semibold text-indigo-600 mb-2">
                   {section.title}
@@ -99,7 +99,7 @@ const CourseLecturePage = () => {
           ) : (
             <p className="text-gray-500">No lectures uploaded yet.</p>
           )}
-        </div> */}
+        </div>
 
         {/* Main Content: Video Player */}
         <div className="col-span-2 bg-white shadow rounded-lg p-4">
