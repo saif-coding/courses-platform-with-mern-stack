@@ -5,9 +5,12 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { UserContext } from "../context/UserContext";
 import { FaChevronDown, FaChevronUp, FaPlayCircle } from "react-icons/fa";
+import { IoMdAddCircleOutline } from "react-icons/io";
+import LecturePopup from "../components/LecturePopup";
 
 const SingleCourse = () => {
   const [showPopup, setShowPopup] = useState(false);
+  const [lectureShowPopup, setLectureShowPopup] = useState(false);
   const { getEnrollCourses } = useContext(UserContext);
   const { id } = useParams();
   const [course, setCourse] = useState(null);
@@ -15,6 +18,7 @@ const SingleCourse = () => {
   const [coursePrice, setCoursePrice] = useState("");
   const navigate = useNavigate();
   const [getSections, setGetSections] = useState([]);
+  const [lectureData, setLectureData] = useState([]);
   const [openSectionIndex, setOpenSectionIndex] = useState(null);
 
   const getAllSections = async () => {
@@ -24,7 +28,6 @@ const SingleCourse = () => {
         { withCredentials: true }
       );
       setGetSections(result.data);
-      console.log(result.data, "section");
     } catch (error) {
       console.log(error);
     }
@@ -41,6 +44,20 @@ const SingleCourse = () => {
       console.log("Error fetching course:", error);
     }
   };
+
+  const getAllLectures = async (id) => {
+    try {
+      const result = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/lectures/get/${id}`
+        // { withCredentials: true }
+      );
+      setLectureData(result.data.allLecture);
+      console.log(result.data.allLecture, "all lecture");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchCourse();
     getAllSections();
@@ -193,6 +210,7 @@ const SingleCourse = () => {
           <div className="w-full max-w-2xl mx-auto mt-6 space-y-4">
             {getSections.map((section, index) => (
               <div
+                onClick={() => getAllLectures(section._id)}
                 key={section._id}
                 className="border border-gray-300 rounded-lg overflow-hidden shadow-sm"
               >
@@ -212,27 +230,53 @@ const SingleCourse = () => {
                 {/* Section Lectures (Dropdown) */}
                 {openSectionIndex === index && (
                   <ul className="bg-white px-4 py-3 space-y-2 border-t">
-                    {sections.lectures ? (
-                      sections.lectures.map((lecture, idx) => (
-                        <li
-                          key={lecture._id}
-                          className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 transition"
-                        >
-                          <FaPlayCircle className="text-indigo-500" />
-                          <span>{lecture.title}</span>
-                        </li>
+                    {lectureData ? (
+                      lectureData.map((lecture, idx) => (
+                        <div>
+                          <li
+                            key={lecture._id}
+                            className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 transition"
+                          >
+                            <FaPlayCircle className="text-indigo-500" />
+                            <span>{lecture.title}</span>
+                          </li>
+                          <video
+                            controls
+                            className="w-full max-w-3xl rounded border"
+                            preload="metadata"
+                          >
+                            <source src={lecture.videoUrl} type="video/mp4" />
+                            Your browser does not support the video tag.
+                          </video>
+                        </div>
                       ))
                     ) : (
-                      <li className="text-gray-500 text-sm italic">
-                        No lectures added. +
-                      </li>
+                      <div className=" flex items-center justify-between">
+                        <li className="text-gray-500 text-sm italic">
+                          No lectures added.
+                        </li>
+                        <span
+                          onClick={() => setLectureShowPopup(!lectureShowPopup)}
+                          className="text-blue-500 text-2xl font-semibold"
+                        >
+                          <IoMdAddCircleOutline />
+                        </span>
+                        {lectureShowPopup && (
+                          <LecturePopup
+                            remove={setLectureShowPopup}
+                            id={section._id}
+                          />
+                        )}
+                      </div>
                     )}
                   </ul>
                 )}
               </div>
             ))}
           </div>
-          {showPopup && <SectionPopup pop={setShowPopup} id={id} />}
+          {showPopup && (
+            <SectionPopup pop={setShowPopup} id={id} fun={getAllSections} />
+          )}
         </div>
       </div>
     </div>

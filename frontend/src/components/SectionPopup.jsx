@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-function SectionPopup({ pop, id }) {
+function SectionPopup({ pop, id, fun }) {
   const [title, setTitle] = useState("");
-  
+
   const createSections = async () => {
     pop(true);
     try {
@@ -16,15 +16,15 @@ function SectionPopup({ pop, id }) {
       if (result.status === 201) {
         toast.success(result.data.message);
         pop(false);
+        await fun();
       }
-      console.log(result.data);
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
     }
   };
   return (
-    <div className="w-full max-w-md mx-autop p-6 bg-gray-300 h-screen absolute top-0">
+    <div className="w-full max-w-md mx-autop p-6 bg-gray-300 h-52 absolute top-0">
       <label
         htmlFor="username"
         className="block text-sm font-medium text-gray-700 mb-1"
@@ -37,7 +37,7 @@ function SectionPopup({ pop, id }) {
           value={title}
           type="text"
           placeholder="Enter your section name"
-          className="w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 ring-indigo-500 focus:border-indigo-500 transition text-sm placeholder-gray-400"
+          className="w-full pl-2 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 ring-indigo-500 focus:border-indigo-500 transition text-sm placeholder-gray-400"
         />
         <div className=" flex gap-8">
           <button

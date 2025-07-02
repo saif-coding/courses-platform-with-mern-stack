@@ -1,5 +1,6 @@
 const { v2: cloudinary } = require("cloudinary"); // ✅ Fixed
 const fs = require("fs");
+const path = require("path");
 // Configuration
 const uploadCloudinary = async (filepath) => {
   cloudinary.config({
@@ -11,7 +12,15 @@ const uploadCloudinary = async (filepath) => {
     if (!filepath) {
       return null;
     }
-    const result = await cloudinary.uploader.upload(filepath);
+    // Detect file extension (e.g., .jpg, .mp4)
+    const ext = path.extname(filepath).toLowerCase();
+
+    // Decide whether it's a video or image
+    const isVideo = [".mp4", ".mov", ".avi", ".webm", ".mkv"].includes(ext);
+    const resourceType = isVideo ? "video" : "image";
+    const result = await cloudinary.uploader.upload(filepath, {
+      resource_type: resourceType,
+    });
     fs.unlinkSync(filepath);
     return result.secure_url;
   } catch (error) {

@@ -15,13 +15,25 @@ function CourseContextProvider({ children }) {
       console.log(error);
     }
   };
-
+  const getAllLectures = async (id) => {
+    try {
+      const result = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/lectures/get/${id}`
+        // { withCredentials: true }
+      );
+      console.log(result.data, "all lecture");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     getAllCourses();
   }, []);
 
   return (
-    <CourseContext.Provider value={{ courseData, setCourseData }}>
+    <CourseContext.Provider
+      value={{ courseData, setCourseData, getAllLectures }}
+    >
       {children}
     </CourseContext.Provider>
   );

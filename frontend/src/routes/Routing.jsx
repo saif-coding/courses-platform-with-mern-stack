@@ -20,7 +20,7 @@ function Routing() {
       <Route path="/dashboard/add" element={<AddCourse />} />
       <Route path="/courses" element={<AllCourses />} />
       <Route path="/single/:id" element={<SingleCourse />} />
-      <Route path="/allvideos/:id" element={<CourseLecturePage />} />
+      <Route path="/allvideos" element={<CourseLecturePage />} />
     </Routes>
   );
 }
